@@ -9,6 +9,11 @@
 # Modified By: ZhanG
 ###
 
+# Mongo
+MongoHost = "bytedancer.cc"
+MongoUN = "ZhanG"
+MongoPW = "ElieenAndBella"
+
 # Girls
 AvA = "MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt"
 Bella = "MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP"
