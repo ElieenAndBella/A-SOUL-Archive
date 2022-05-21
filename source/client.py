@@ -8,4 +8,8 @@
 # Last Modified: Sat May 21 2022
 # Modified By: ZhanG
 ###
+import httpx
+from util.const import UserAgent
 
+
+client = httpx.AsyncClient(headers={"User-Agent": UserAgent})

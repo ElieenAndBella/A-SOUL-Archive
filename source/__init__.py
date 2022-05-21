@@ -8,3 +8,10 @@
 # Last Modified: Sat May 21 2022
 # Modified By: ZhanG
 ###
+from .scrape_video import Scrape as sv
+from .scrape_member_info import Scrape as smi
+
+ScrapeType = {
+    "scrape_video": sv,
+    "scrape_member_info": smi
+}

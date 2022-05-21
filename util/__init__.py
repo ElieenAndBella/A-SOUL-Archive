@@ -8,23 +8,3 @@
 # Last Modified: Sat May 21 2022
 # Modified By: ZhanG
 ###
-
-from .const import (
-    AvA,
-    Bella,
-    Carol,
-    Diana,
-    Elieen,
-    Acao,
-    UserAgent
-)
-
-__all__ = [
-    "AvA",
-    "Bella",
-    "Carol",
-    "Diana",
-    "Elieen",
-    "Acao",
-    "UserAgent",
-]
