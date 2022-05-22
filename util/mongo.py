@@ -5,19 +5,22 @@
 # Author: ZhanG
 # Github: https://github.com/ElieenAndBella
 # -----
-# Last Modified: Sat May 21 2022
+# Last Modified: Sun May 22 2022
 # Modified By: ZhanG
 ###
-from const import MongoUN, MongoPW, MongoHost
+import json
+from .const import MongoUN, MongoPW, MongoHost
 from motor.motor_asyncio import AsyncIOMotorClient
 
 MongoUri = f"mongodb://{MongoUN}:{MongoPW}@{MongoHost}"
-mclient = AsyncIOMotorClient(MongoUri)["ASOUL"]
+mclient = AsyncIOMotorClient(MongoUri)
+mdb = mclient["ASOUL"]
 
-async def find():
-    record = mclient['member'].find({})
-    print(await record.to_list(length=5))
 
-import asyncio
+async def MemberUpdate(sec_uid: str, new: json):
+    mdb['member'].update_one({'user_info.sec_uid': sec_uid}, {
+                             '$set': new}, upsert=True)
 
-asyncio.run(find())
+
+async def VideoInfoUpdate(aweme_id: str, new: json):
+    mdb['video'].update_one({'aweme_id': aweme_id}, {'$set': new}, upsert=True)

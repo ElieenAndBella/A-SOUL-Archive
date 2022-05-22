@@ -5,11 +5,11 @@
 # Author: ZhanG
 # Github: https://github.com/ElieenAndBella
 # -----
-# Last Modified: Sat May 21 2022
+# Last Modified: Sun May 22 2022
 # Modified By: ZhanG
 ###
 import httpx
 from util.const import UserAgent
 
-
-client = httpx.AsyncClient(headers={"User-Agent": UserAgent})
+transport = httpx.AsyncHTTPTransport(retries=2)
+client = httpx.AsyncClient(transport=transport, headers={"User-Agent": UserAgent})
