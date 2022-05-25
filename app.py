@@ -23,7 +23,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def sched():
-    # 最大并发数
+    # Set maximum concurrency
     app.state.sema = asyncio.Semaphore(6)
     try:
         scheduler = AsyncIOScheduler(timezone='Asia/Shanghai')
