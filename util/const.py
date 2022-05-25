@@ -5,14 +5,14 @@
 # Author: ZhanG
 # Github: https://github.com/ElieenAndBella
 # -----
-# Last Modified: Mon May 23 2022
+# Last Modified: Wed May 25 2022
 # Modified By: ZhanG
 ###
 
 # Mongo
 MongoHost = "bytedancer.cc"
-MongoUN = "ZhanG"
-MongoPW = "ElieenAndBella"
+MongoUN = ""
+MongoPW = ""
 
 # Girls
 AvA = "MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt"
