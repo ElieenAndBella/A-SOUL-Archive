@@ -5,7 +5,7 @@
 # Author: ZhanG
 # Github: https://github.com/ElieenAndBella
 # -----
-# Last Modified: Sun May 22 2022
+# Last Modified: Wed May 25 2022
 # Modified By: ZhanG
 ###
 import asyncio
@@ -18,20 +18,21 @@ from util.timeit import async_timeit
 asoul = [AvA, Bella, Carol, Diana, Elieen, Acao]
 
 @async_timeit
-async def Scrape():
+async def Scrape(sema):
     tasks = []
     for sid in asoul:
-        tasks.append(asyncio.create_task(_scrape_member_info(sid)))
+        tasks.append(asyncio.create_task(_scrape_member_info(sid, sema)))
     await asyncio.wait(tasks)
 
 
-async def _scrape_member_info(sec_uid: str):
-    try:
-        resp = await client.get(f"https://www.iesdouyin.com/web/api/v2/user/info/?sec_uid={sec_uid}")
-        await MemberUpdate(sec_uid, resp.json())
-        logger.info(f"Member Info sec_uid={sec_uid}")
-        if resp.status_code // 100 != 2:
-            raise
-    except Exception as e:
-        logger.error(
-            f"There is something wrong. skip. sec_uid={sec_uid} exception={e}")
+async def _scrape_member_info(sec_uid: str, sema):
+    async with sema:
+        try:
+            resp = await client.get(f"https://www.iesdouyin.com/web/api/v2/user/info/?sec_uid={sec_uid}")
+            await MemberUpdate(sec_uid, resp.json())
+            logger.info(f"Member Info sec_uid={sec_uid}")
+            if resp.status_code // 100 != 2:
+                raise
+        except Exception as e:
+            logger.error(
+                f"There is something wrong. skip. sec_uid={sec_uid} exception={e}")
