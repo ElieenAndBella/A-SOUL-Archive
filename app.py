@@ -5,18 +5,19 @@
 # Author: ZhanG
 # Github: https://github.com/ElieenAndBella
 # -----
-# Last Modified: Wed May 25 2022
+# Last Modified: Thu May 26 2022
 # Modified By: ZhanG
 ###
 import asyncio
 
 from loguru import logger
 from typing import Union
-
 from source import ScrapeType
 from fastapi import FastAPI, Request
-
+from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+from router.v1 import router
 
 app = FastAPI()
 
@@ -54,6 +55,14 @@ async def scrape(request: Request, type: str, key: Union[str, None] = None):
         "status": "I'm Scraping"
     }
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+app.include_router(router, prefix="/api")
 
 if __name__ == '__main__':
     import uvicorn

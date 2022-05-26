@@ -17,25 +17,6 @@
     </v-dialog>
 
     <v-container>
-      <h2 class="text-center pa-8">A-SOUL 抖音视频 All in one!</h2>
-      <v-row
-          justify="center"
-          no-gutters
-      >
-        <v-text-field
-            ref="searchInput"
-            v-model="searchString"
-            class="mx-2 mx-md-4 rounded-lg justify-center"
-            placeholder="搜索..."
-            autocomplete="off"
-            dense
-            hide-details
-            solo
-            style="max-width: 450px;"
-            @input="searchChange"
-        >
-        </v-text-field>
-      </v-row>
       <v-row
           justify="center"
           no-gutters
@@ -88,13 +69,11 @@
           <v-card>
             <v-img
                 :ref="`cover-${index}`"
-                :src="setCover(index, v)"
+                :src="v.dynamic_cover_urls[0]"
                 class="white--text align-end"
-                :position="v.face_points.length > 0 ? 'bottom center' : 'center center'"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="220px"
+                height="480px"
             >
-              <span v-show="false">{{ v.face_points }}</span>
               <v-card-title v-text="v.description"></v-card-title>
               <v-row class="pl-7 pb-5 pt-1">
                 <v-icon color="red lighten-2" dense>mdi-heart</v-icon>
@@ -113,7 +92,7 @@
                 <img :src="v.author.avatar_url" :alt="v.author.name"/>
               </v-avatar>
               <v-spacer></v-spacer>
-              <span class="grey--text text--darken-1">{{ new Date(v.created_at).toLocaleDateString() }}</span>
+              <span class="grey--text text--darken-1">{{ new Date(v.created_at * 1000).toLocaleString().replace(/:\d{1,2}$/,' ') }}</span>
               <v-spacer></v-spacer>
               <v-btn icon @click="playVideo(v)">
                 <v-icon>mdi-play</v-icon>
@@ -164,13 +143,13 @@ export default {
       isEnd: false,
       currentPage: 1,
       playerDialog: false,
-      playerWidth: 400,
+      playerWidth: 360,
       playerOptions: {
         loop: true,
         fluid: true,
         autoplay: true,
         muted: false,
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
+        playbackRates: [0.5, 1.0, 1.5, 2.0],
         sources: [{
           type: "video/mp4",
           src: ''
@@ -178,7 +157,6 @@ export default {
         lang: 'zh-CN',
       },
       videos: [],
-      coverTemplate: '',
 
       searchString: '',
       searchMembers: [],
@@ -186,32 +164,32 @@ export default {
       memberItems: [
         {
           text: '向晚 Ava',
-          value: 'MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt',
+          value: '2497695890809629',
           key: 1 << 0
         },
         {
           text: '贝拉 Bella',
-          value: 'MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP',
+          value: '1389388146161774',
           key: 1 << 1
         },
         {
           text: '珈乐 Carol',
-          value: 'MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya',
+          value: '3570819240827502',
           key: 1 << 2
         },
         {
           text: '嘉然 Diana',
-          value: 'MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c',
+          value: '756069459828192',
           key: 1 << 3
         },
         {
           text: '乃琳 Eileen',
-          value: 'MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92',
+          value: '4485612889456440',
           key: 1 << 4
         },
         {
           text: 'A-SOUL Official',
-          value: 'MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n',
+          value: '1002373479924424',
           key: 1 << 5
         },
       ]
@@ -222,9 +200,6 @@ export default {
     this.getMembers()
     this.getVideos()
     this.onScroll()
-    this.getImagexTemplate().then(res => {
-      this.coverTemplate = res
-    })
   },
 
   methods: {
@@ -236,19 +211,20 @@ export default {
         }
         this.isLoading = true
 
-        let secUID = []
+        let uids = []
+        console.log(this.searchMembers)
         this.searchMembers.forEach((item) => {
-          secUID.push(item.value)
+          uids.push(item.value)
         })
 
-        axios.get('https://asoul.cdn.n3ko.co/api/videos', {
+        axios.get('http://192.168.50.2:9008/api/videos', {
           params: {
             page: this.currentPage,
             keyword: this.searchString,
-            secUID: secUID,
+            uid: uids,
           },
           paramsSerializer: params => {
-            return qs.stringify(params, {arrayFormat: 'repeat'})
+            return qs.stringify(params, {indices: false})
           }
         }).then(res => {
           if (res.data.data.length === 0) {
@@ -267,9 +243,9 @@ export default {
 
     getMembers() {
       return new Promise((resolve, reject) => {
-        axios.get('https://asoul.cdn.n3ko.co/api/members').then(res => {
+        axios.get('http://192.168.50.2:9008/api/members').then(res => {
           res.data.data.forEach((value) => {
-            this.members[value.sec_uid] = value
+            this.members[value.uid] = value
           })
           resolve()
         }).catch(err => {
@@ -280,9 +256,9 @@ export default {
 
     playVideo(v) {
       if (v.video_height > v.video_width) {
-        this.playerWidth = 400
+        this.playerWidth = v.video_width / 3
       } else {
-        this.playerWidth = 1000
+        this.playerWidth = v.video_width / 6 * 2
       }
 
       this.playerDialog = true
@@ -326,41 +302,6 @@ export default {
 
     resetSearch() {
       this.searchString = ''
-    },
-
-    setCover(index, v) {
-      let coverURL = v.dynamic_cover_urls[0].replace(/obj/g, '').replace(/~(.*)/g, '');
-      if (v.face_points.length > 0) {
-        let width = 285;
-        let scale = width / v.cover_width;
-        let faceYFrom = v.face_points[0].Min.Y * scale;
-        let faceYTo = v.face_points[0].Max.Y * scale;
-        let spaceHeight = (200 - (faceYTo - faceYFrom)) / 2
-        let imageHeight = (faceYTo + spaceHeight).toFixed()
-
-        let url = coverURL + `~tplv-crop-top:${width}:${imageHeight}.jpg`;
-        return url
-      }
-
-      return coverURL + this.coverTemplate
-    },
-
-
-    getImagexTemplate() {
-      return new Promise((resolve, reject) => {
-        axios.post('https://imagexdemo.volcengine.com/api/PreviewLiteImageTemplate/', {
-          "OuputQuality": 100,
-          "ImageUri": "imagex-rc/6.png",
-          "Filters": [{"Name": "smartv2", "Param": {"width": 285, "height": 220, "policy": 1, "scene": "cartoon"}}],
-          "Sync": true,
-          "OutputExtra": {"heic.sync": "true", "heic.timeout": "30", "png.use_quant": "true"}
-        }).then(res => {
-          let url = res.data.Result.PreviewURL;
-          resolve(url.substr(url.indexOf('~')))
-        }).catch(err => {
-          reject(err)
-        })
-      })
     },
 
     getCPName() {

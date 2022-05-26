@@ -1,65 +1,36 @@
 <template>
   <v-app>
-    <v-app-bar
-        app
-        color="primary"
-    >
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-btn
-          href="https://github.red/asoul-video-trick/"
-          target="_blank"
-          text
-          class="white--text ml-2 mr-2"
-      >
-        关于
-      </v-btn>
-      <v-btn
-          href="https://github.com/asoul-sig"
-          target="_blank"
-          text
-          class="white--text ml-2 mr-2"
-      >
-        <span>开源</span>
-      </v-btn>
-      <div class="white--text ml-2 mr-2">
-        <b>A-SOUL Video</b>
+    <v-dialog v-model="buyCoffee" @click:outside="toggleBuyMeACoffee" :max-width="coffeeWidth" :eager="true">
+      <v-card>
+        <v-img src="https://bytedancer.cc/static/pay.png" width="1118px"></v-img>
+      </v-card>
+    </v-dialog>
+    <v-app-bar app>
+      <div class="dark--text text-h4">
+        <b>A-SOUL</b>
       </div>
-      <v-btn
-          href="https://github.com/asoul-video/acao"
-          target="_blank"
-          text
-          class="white--text ml-2 mr-2"
-      >
-        阿草
+      <v-spacer></v-spacer>
+      <v-btn color="info" dark @click="toggleBuyMeACoffee">
+        Buy me a coffee
+        <v-icon right dark>
+          mdi-coffee
+        </v-icon>
       </v-btn>
-      <v-menu offset-y open-on-hover>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-              dark
-              text
-              v-bind="attrs"
-              v-on="on"
-              class="white--text ml-2 mr-2"
-          >
-            友链
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item-group>
-            <v-list-item v-for="(link, index) in friendLink" v-bind:key="index">
-              <v-list-item-action @click="open(link.url)">
-                {{ link.name }}
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
+      <v-btn class="ma-2" color="info" dark href="https://github.com/ElieenAndBella/A-SOUL-Archive/issues"
+        target="_blank">
+        Bug Report
+        <v-icon right dark>
+          mdi-wrench
+        </v-icon>
+      </v-btn>
+      <v-btn color="info" @click="toggleDarkTheme">
+        <v-icon>
+          mdi-white-balance-sunny
+        </v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -71,13 +42,17 @@ export default {
 
   data() {
     return {
-      friendLink: [{"name": "枝网查重", "url": "https://asoulcnki.asia/"}]
+      coffeeWidth: 400,
+      buyCoffee: false
     }
   },
 
   methods: {
-    open(url) {
-      window.open(url, '_blank')
+    toggleDarkTheme() {
+      this.$vuetify.theme.isDark = !this.$vuetify.theme.isDark
+    },
+    toggleBuyMeACoffee() {
+      this.buyCoffee = !this.buyCoffee
     }
   }
 };
