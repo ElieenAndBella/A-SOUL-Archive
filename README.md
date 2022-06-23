@@ -83,3 +83,7 @@ Database: MongoDB
 # **License**
 
 MIT
+
+# **Thanks**
+
+https://github.com/asoul-sig/asoul-video 修改了并使用了前端代码
