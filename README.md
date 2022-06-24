@@ -26,9 +26,10 @@ MIT
 
 # **Thanks**
 
-https://github.com/asoul-sig/asoul-video
+- https://github.com/asoul-sig/asoul-video  
+- https://github.com/SocialSisterYi/bilibili-API-collect
 
 # **TODO**
 
-1.Add A-SOUL Calendar
-2.Add Bilibili Video
+1.**Add A-SOUL Calendar**  
+2.**Add Bilibili Video**
