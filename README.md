@@ -13,41 +13,11 @@ Database: MongoDB
 ## **|** **Project Tree**
 
 ```
-├── LICENSE
-├── README.md
-├── __pycache__
-│   ├── app.cpython-38.pyc
-│   └── main.cpython-38.pyc
-├── app.py
-├── router
-│   ├── __init__.py
-│   ├── __pycache__
-│   └── v1.py
-├── source
-│   ├── __init__.py
-│   ├── __pycache__
-│   ├── client.py
-│   ├── scrape_member_info.py
-│   └── scrape_videos.py
-├── util
-│   ├── __init__.py
-│   ├── __pycache__
-│   ├── const.py
-│   ├── mongo.py
-│   └── timeit.py
-├── venv
-│   ├── bin
-│   ├── lib
-│   └── pyvenv.cfg
-└── website
-    ├── babel.config.js
-    ├── dist
-    ├── node_modules
-    ├── package-lock.json
-    ├── package.json
-    ├── public
-    ├── src
-    └── vue.config.js
+├── app.py    主入口
+├── router    路由接口
+├── source    爬虫相关
+├── util      常量，数据库相关
+└── website   前端相关
 ```
 
 # **License**
@@ -57,3 +27,8 @@ MIT
 # **Thanks**
 
 https://github.com/asoul-sig/asoul-video
+
+# **TODO**
+
+1.Add A-SOUL Calendar
+2.Add Bilibili Video
