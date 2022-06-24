@@ -217,7 +217,7 @@ export default {
           uids.push(item.value)
         })
 
-        axios.get('https://douyin.bytedancer.cc/api/videos', {
+        axios.get('https://asoul.bytedancer.cc/api/videos', {
           params: {
             page: this.currentPage,
             keyword: this.searchString,
@@ -243,7 +243,7 @@ export default {
 
     getMembers() {
       return new Promise((resolve, reject) => {
-        axios.get('https://douyin.bytedancer.cc/api/members').then(res => {
+        axios.get('https://asoul.bytedancer.cc/api/members').then(res => {
           res.data.data.forEach((value) => {
             this.members[value.uid] = value
           })
@@ -255,10 +255,12 @@ export default {
     },
 
     playVideo(v) {
-      if (v.video_width == 2160) {
+      if (v.video_width == 2160 || v.video_width == 3840) {
         this.playerWidth = v.video_width / 6
       } else if (v.video_height > v.video_width) {
         this.playerWidth = v.video_width / 3
+      } else if (v.video_width == 2560) {
+        this.playerWidth = v.video_width / 8 * 2
       } else {
         this.playerWidth = v.video_width / 6 * 2
       }
